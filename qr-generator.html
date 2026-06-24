@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR-Codes erzeugen – Escape-Adventskalender</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; background:#0e1116; color:#f2efe6; margin:0; padding:24px; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 22px; }
+  p { color:#9aa0aa; line-height:1.5; }
+  label { display:block; font-weight:600; margin:18px 0 6px; }
+  input { width:100%; padding:12px 14px; font-size:15px; border-radius:10px; border:1px solid #333; background:#171c24; color:#f2efe6; }
+  button { margin-top:16px; background:#c8a24b; color:#1a1206; border:none; padding:12px 18px; font-size:15px; font-weight:700; border-radius:10px; cursor:pointer; }
+  button.alt { background:#222; color:#f2efe6; border:1px solid #444; }
+  .codes { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:16px; margin-top:26px; }
+  .card { background:#171c24; border:1px solid #2a2f38; border-radius:12px; padding:14px; text-align:center; }
+  .card h3 { font-size:14px; margin:0 0 4px; }
+  .card .url { font-size:10px; color:#9aa0aa; word-break:break-all; margin:6px 0; }
+  .card canvas, .card img { background:#fff; padding:8px; border-radius:8px; }
+  .card a { display:inline-block; margin-top:8px; font-size:12px; color:#c8a24b; cursor:pointer; text-decoration:underline; }
+  .hint { background:#171c24; border:1px solid #2a2f38; border-radius:10px; padding:14px; font-size:13px; margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>QR-Code erzeugen</h1>
+  <p>Gib unten die Internet-Adresse (URL) deines fertig veröffentlichten Kalenders ein – also deine GitHub-Pages-Adresse. Dann erzeugt diese Seite <b>einen QR-Code</b>, der immer die komplette Übersicht (1.–24. Dezember) öffnet.</p>
+
+  <label for="base">Adresse deines Kalenders</label>
+  <input id="base" type="text" placeholder="https://deinname.github.io/adventskalender/">
+  <div class="hint">Beispiel: <code>https://neolibri.github.io/escape-adventskalender/</code> &nbsp;–&nbsp; achte darauf, dass am Ende ein <b>/</b> steht.</div>
+
+  <button onclick="erzeugen()">QR-Code erzeugen</button>
+  <button class="alt" onclick="window.print()">Drucken / als PDF speichern</button>
+
+  <div class="codes" id="codes"></div>
+</div>
+
+<script>
+function clean(u){ u = u.trim(); if(u && !u.endsWith("/")) u += "/"; return u; }
+
+function card(title, url, size){
+  size = size || 130;
+  const div = document.createElement("div");
+  div.className = "card";
+  const h = document.createElement("h3"); h.textContent = title; div.appendChild(h);
+  const qr = document.createElement("div"); div.appendChild(qr);
+  new QRCode(qr, { text: url, width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
+  const urlEl = document.createElement("div"); urlEl.className="url"; urlEl.textContent = url; div.appendChild(urlEl);
+  const dl = document.createElement("a"); dl.textContent = "PNG herunterladen";
+  dl.onclick = () => {
+    const img = qr.querySelector("img") || qr.querySelector("canvas");
+    let dataUrl = img.tagName === "IMG" ? img.src : img.toDataURL("image/png");
+    const a = document.createElement("a"); a.href = dataUrl; a.download = title.replace(/[^\w]+/g,"_") + ".png"; a.click();
+  };
+  div.appendChild(dl);
+  return div;
+}
+
+function erzeugen(){
+  const base = clean(document.getElementById("base").value);
+  const box = document.getElementById("codes");
+  box.innerHTML = "";
+  if(!base){ alert("Bitte zuerst die Adresse eingeben."); return; }
+  box.appendChild(card("Adventskalender – Übersicht", base, 320));
+}
+</script>
+</body>
+</html>

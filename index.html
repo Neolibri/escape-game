@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e1116">
+  <title>Calendrier de l'Avent Escape Room</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Calendrier de l'Avent">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <div class="header">
+      <!-- COVER: Sobald du dein Cover hast, lade die Bilddatei (z.B. cover.jpg)
+           ins Repository und ersetze den Text-Platzhalter durch ein Bild:
+           <div class="cover"><img src="cover.jpg" alt="Cover"></div>
+      -->
+      <div class="cover" id="cover">Couverture à venir – placez ici la couverture de votre livre</div>
+      <h1 id="titel">Calendrier de l'Avent Escape Room</h1>
+      <p id="untertitel">24 cases pleines d'énigmes</p>
+    </div>
+
+    <div class="install-tip" id="installTip">
+      <span class="close" onclick="document.getElementById('installTip').classList.remove('show')">✕</span>
+      <b>Astuce :</b> via le menu de votre navigateur « Ajouter à l'écran d'accueil », vous pouvez enregistrer ce calendrier comme une application.
+    </div>
+
+    <!-- Hier wird per JavaScript entweder die Übersicht oder ein Tag gerendert -->
+    <div id="view"></div>
+
+    <div class="footer" id="footer"></div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="inhalte.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

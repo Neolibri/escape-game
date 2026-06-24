@@ -1,0 +1,132 @@
+/* =====================================================================
+   DESIGN  –  Die wichtigsten Farben & Größen kannst du hier oben ändern.
+   (Schnelle Farbwahl auch in js/config.js möglich – die überschreibt
+    diese Standardwerte.)
+   ===================================================================== */
+:root {
+  --bg:          #0e1116;   /* Hintergrund        */
+  --karte:       #171c24;   /* Karten / Kacheln   */
+  --akzent:      #c8a24b;   /* Gold-Akzent        */
+  --akzent2:     #7a1f2b;   /* zweiter Akzent     */
+  --text:        #f2efe6;   /* Schrift            */
+  --text-leise:  #9aa0aa;   /* gedämpfte Schrift  */
+  --radius:      18px;      /* Eckenrundung       */
+  --maxbreite:   620px;     /* max. Inhaltsbreite */
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  overflow-x: hidden;
+}
+
+.app { max-width: var(--maxbreite); margin: 0 auto; padding: 22px 18px 64px; }
+
+/* --- Kopfbereich (hier später dein Cover/Logo einsetzen) ------------- */
+.header { text-align: center; margin-bottom: 26px; }
+.header .cover {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 120% at 50% 0%, color-mix(in srgb, var(--akzent) 22%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--karte), #11151c);
+  border: 1px solid color-mix(in srgb, var(--akzent) 25%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-leise); font-size: 14px; letter-spacing: .5px;
+  margin-bottom: 16px; overflow: hidden;
+}
+.header .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.header h1 { font-size: 26px; font-weight: 800; letter-spacing: .3px; }
+.header p  { color: var(--text-leise); margin-top: 4px; font-size: 15px; }
+
+/* --- Kalender-Gitter 1..24 ------------------------------------------ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+@media (min-width: 480px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+
+.tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  background: var(--karte);
+  border: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 800; color: var(--text);
+  cursor: pointer;
+  transition: transform .12s ease, border-color .2s ease, box-shadow .2s ease;
+  user-select: none;
+}
+.tile:active { transform: scale(.95); }
+.tile.offen  { border-color: color-mix(in srgb, var(--akzent) 55%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--akzent) 30%, transparent) inset; }
+.tile.offen .num { color: var(--akzent); }
+.tile.gesperrt { color: var(--text-leise); cursor: not-allowed; opacity: .55; }
+.tile .lock { position: absolute; bottom: 8px; font-size: 13px; opacity: .8; }
+.tile.heute { box-shadow: 0 0 0 2px var(--akzent), 0 6px 18px rgba(0,0,0,.4); }
+
+/* --- Detailansicht eines Tages -------------------------------------- */
+.detail { animation: fade .25s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: none; } }
+
+.zurueck {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: none; border: none; color: var(--text-leise);
+  font-size: 15px; cursor: pointer; padding: 6px 0; margin-bottom: 14px;
+}
+.zurueck:active { color: var(--text); }
+
+.tag-kopf { text-align: center; margin-bottom: 22px; }
+.tag-kopf .badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--akzent); color: #1a1206; font-size: 26px; font-weight: 800;
+  margin-bottom: 10px;
+}
+.tag-kopf h2 { font-size: 22px; }
+.tag-kopf .datum { color: var(--text-leise); font-size: 14px; margin-top: 2px; }
+
+/* Aufklapp-Buttons */
+.reveal { margin-bottom: 14px; border-radius: var(--radius); overflow: hidden; background: var(--karte); border: 1px solid rgba(255,255,255,.07); }
+.reveal-btn {
+  width: 100%; text-align: left;
+  background: none; border: none; color: var(--text);
+  font-size: 17px; font-weight: 600; cursor: pointer;
+  padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.reveal-btn .ico { width: 26px; height: 26px; flex: 0 0 26px; display: flex; align-items: center; justify-content: center; }
+.reveal-btn .chev { transition: transform .25s ease; color: var(--text-leise); }
+.reveal.aktiv .reveal-btn .chev { transform: rotate(90deg); }
+.reveal.loesung .reveal-btn { color: var(--akzent); }
+
+.reveal-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .3s ease;
+  padding: 0 20px;
+}
+.reveal.aktiv .reveal-body { max-height: 1200px; padding: 0 20px 20px; }
+.reveal-body .inhalt { color: var(--text); line-height: 1.6; font-size: 16px; padding-top: 4px; border-top: 1px solid rgba(255,255,255,.07); }
+.reveal-body .inhalt img { max-width: 100%; border-radius: 12px; margin-top: 10px; }
+
+/* Hinweis: Lösung erst nach beiden Hinweisen? -> nur visueller Tipp */
+.hinweis-zaehler { text-align: center; color: var(--text-leise); font-size: 13px; margin: 4px 0 18px; }
+
+/* gesperrter Tag in Detailansicht */
+.gesperrt-box { text-align: center; background: var(--karte); border: 1px solid rgba(255,255,255,.07); border-radius: var(--radius); padding: 40px 24px; color: var(--text-leise); }
+.gesperrt-box .schloss { font-size: 40px; margin-bottom: 12px; }
+
+.footer { text-align: center; color: var(--text-leise); font-size: 12px; margin-top: 34px; opacity: .7; }
+
+/* Installations-Hinweis (PWA) */
+.install-tip { background: color-mix(in srgb, var(--akzent) 12%, var(--karte)); border: 1px solid color-mix(in srgb, var(--akzent) 30%, transparent); border-radius: 12px; padding: 12px 14px; font-size: 13px; color: var(--text); margin-bottom: 18px; display: none; }
+.install-tip.show { display: block; }
+.install-tip b { color: var(--akzent); }
+.install-tip .close { float: right; cursor: pointer; color: var(--text-leise); }
