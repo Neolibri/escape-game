@@ -19,7 +19,7 @@ const CONFIG = {
   /* --- Testmodus ------------------------------------------------------ */
   // true  = alles ist freigeschaltet, egal welches Datum (zum Ausprobieren!)
   // Vor dem echten Einsatz im Dezember auf false stellen.
-  testmodus: true,
+  testmodus: false,
 
   /* --- Design (Schnellwahl) ------------------------------------------
      Feinere Anpassungen findest du in  css/styles.css  ganz oben.       */

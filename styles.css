@@ -43,6 +43,18 @@ body {
   margin-bottom: 16px; overflow: hidden;
 }
 .header .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.header .cover--schild {
+  aspect-ratio: auto;
+  background: none;
+  border: none;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,.45));
+}
+.header .cover--schild img {
+  width: min(100%, 420px);
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
 .header h1 { font-size: 26px; font-weight: 800; letter-spacing: .3px; }
 .header p  { color: var(--text-leise); margin-top: 4px; font-size: 15px; }
 
@@ -130,3 +142,12 @@ body {
 .install-tip.show { display: block; }
 .install-tip b { color: var(--akzent); }
 .install-tip .close { float: right; cursor: pointer; color: var(--text-leise); }
+
+/* Hinweis unter dem Untertitel (2026-07-08): Tage sind bis zum
+   jeweiligen Dezembertag gesperrt — damit niemand einen Fehler vermutet. */
+.header .unlock-hint {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--text-leise);
+  opacity: .85;
+}
